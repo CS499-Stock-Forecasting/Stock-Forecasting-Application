@@ -8,3 +8,4 @@ from .models import StockData
 class StockDataView(viewsets.ModelViewSet):
     serializer_class = StockDataSerializer
     queryset = StockData.objects.all()
+    lookup_field = 'ticker'
