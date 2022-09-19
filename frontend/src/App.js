@@ -22,9 +22,9 @@ class App extends Component {
     // reset stock data
     // this.setState({value: '', stockData: [], databaseContainsTicker: false });
     axios
-        .get("/api/stockForecasting/", ticker)
-        .then((res) => this.setState({value: ticker, stockData: res.data, databaseContainsTicker: true }))
-        // .then((res) => alert(res.data.ticker))
+        .get("/api/stockForecasting/" + ticker)
+        // .then((res) => this.setState({value: ticker, stockData: res.data, databaseContainsTicker: true }))
+        .then((res) => console.log(res.data))
 
         .catch((err) => {
             // alert("Stock data not in database");
