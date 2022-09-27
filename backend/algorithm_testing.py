@@ -23,7 +23,7 @@ def data_linear_regression_graph(sym, name, graph, figname):
 
     prediction = round(intercept + avg_slope * (x + 1), 2)
 
-    print("(" + sym + ")", name, "next day:", "$" + str(prediction), "+-", "$" + str(deviation))
+    print("(" + sym + ")", name, "next day:", prediction, "+-", deviation)
 
 
 ###### Get data from AlphaVantage
