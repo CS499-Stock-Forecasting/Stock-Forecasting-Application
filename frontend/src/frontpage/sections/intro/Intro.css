@@ -1,0 +1,20 @@
+.introBody{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    margin-top: 35vh;
+
+}
+.introBodyText{
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 1%;
+}
+.introBodyH1{
+    font-size: 46px;
+}
+.introBodyButton{
+    margin-top: 3%;
+    
+}
