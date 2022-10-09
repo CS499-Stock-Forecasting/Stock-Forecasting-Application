@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from App.backend.stockForecasting.views import UserView
 from rest_framework import routers
-from stockForecasting import views
+from stockForecasting.views import StockDataView, UserView
+
 
 router = routers.DefaultRouter()
-router.register(r'stockForecasting', views.StockDataView)
+router.register(r'stockForecasting', StockDataView)
+router.register(r'users', UserView)
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('', include(router.urls))
-]
+urlpatterns = []
+urlpatterns += router.urls
