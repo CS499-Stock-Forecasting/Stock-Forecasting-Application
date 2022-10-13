@@ -1,26 +1,48 @@
 import requests
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import math
 
-def data_linear_regression_graph(sym, name, graph, figname):
+def data_linear_regression_graph(sym, name, precision, graph, figname):
     # Cache Series from data DataFrame
     partial_data = data[name]
 
-    # Get the number of consecutive pairs in the data
-    x = partial_data.size - 1
+    # Get the number of data points
+    x = partial_data.size
 
     # Create the regression line
-    avg_slope = 0
     intercept = partial_data[0]
+    min_slope = math.inf
+    max_slope = -math.inf
 
-    for i in range(x):
-        avg_slope += partial_data[i + 1] - partial_data[i]
-    avg_slope /= x
+    # Find min and max slope
+    for i in range(1, x):
+        slope = (partial_data[i] - intercept) / i
+        if slope < min_slope:
+            min_slope = slope
+        if slope > max_slope:
+            max_slope = slope
+
+    # Select the slope that fits the most data, based on the distance from the data to the current line with the current slope
+    min_dist = math.inf
+    best_slope = None
+
+    for i in np.arange(min_slope, max_slope, precision):
+        dist = 0
+        for j in range(x):
+            dist += abs(partial_data[j] - (i * j + intercept))
+        dist /= x
+        if dist < min_dist:
+            best_slope = i
+            min_dist = dist
+        else:
+            break
 
     # If permitted, graph out the data with the regression line
     if graph:
         partial_data_plot = partial_data.plot(figsize = (8, 5))
-        partial_data_plot.plot([intercept + avg_slope * i for i in range(x + 1)])
+        partial_data_plot.plot([intercept + best_slope * i for i in range(x + 1)])
         partial_data_plot.get_figure().savefig(figname)
 
     # Print out the next predicted value and the deviation (range the actual value could fall on)
@@ -30,10 +52,10 @@ def data_linear_regression_graph(sym, name, graph, figname):
     ## Volume needs to be a whole number
     if name == "volume":
         deviation = round(partial_data.std())
-        prediction = round(intercept + avg_slope * (x + 1))
+        prediction = round(intercept + best_slope * (x + 1))
     else:
         deviation = round(partial_data.std(), 2)
-        prediction = round(intercept + avg_slope * (x + 1), 2)
+        prediction = round(intercept + best_slope * (x + 1), 2)
 
     print("(" + sym + ")", name, "next day:", prediction, "+-", deviation)
 
@@ -64,4 +86,4 @@ data = data.iloc[::-1]
 
 ###### Regression Techniques WIP
 
-data_linear_regression_graph(symbol, "close", False, "")
+data_linear_regression_graph(symbol, "open", 0.1, False, "")
