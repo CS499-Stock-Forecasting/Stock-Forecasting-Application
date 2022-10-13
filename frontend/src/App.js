@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Frontpage from "./frontpage/Frontpage";
+import Application from "./applicationpage/Application";
+
+import {Route, Routes} from 'react-router-dom'
 
 class App extends Component {
   // constructor(props) {
@@ -64,9 +67,13 @@ class App extends Component {
       //       {this.renderSearchBar()}
       //   </div>
       // </main>
-      <div>
-        <Frontpage></Frontpage>
-      </div>
+
+        <Routes>
+          <Route path='/' element={<Frontpage></Frontpage>}/>
+          <Route path='/home' element={<Frontpage></Frontpage>}/>
+          <Route path='/app' element={<Application/>}/>
+
+        </Routes>
     );
   }
 }

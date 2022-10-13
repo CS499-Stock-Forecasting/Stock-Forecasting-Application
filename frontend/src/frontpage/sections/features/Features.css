@@ -5,7 +5,7 @@
     height: 100%;
 }
 .advanceCharts{
-    margin-top: 0%;
+    margin-top: 20%;
     margin-left: 1%;
     margin-right: 1%;
     display: flex;
@@ -40,6 +40,27 @@
     justify-content: right;
     align-items: center;
 }
-.timeSeriesForecastingText{
+.personalizedAccounts{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20%;
+}
+.personalizedAccountsImg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.personalizedAccountsText{
 
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.personalizedAccountsText h1{
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; */
 }
