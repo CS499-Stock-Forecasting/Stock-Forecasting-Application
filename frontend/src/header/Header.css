@@ -1,0 +1,42 @@
+.navbar{
+    display: flex;
+    width: 100%;
+}
+.navButton{
+    display: flex-end;
+    align-items: center;
+    justify-content: center;
+    margin-left: 50%;
+}
+.navContainter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.navRedirects{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5%;
+    color: black;
+    font-size: 1.4rem;
+}
+.logo{
+    width: 15%;
+    color: black;
+    text-decoration: none;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: row;
+}
+html {
+	scroll-behavior: smooth;
+}
+.headerLogo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    margin-right: 4%;
+}
