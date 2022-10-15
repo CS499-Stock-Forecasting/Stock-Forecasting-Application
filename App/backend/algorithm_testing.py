@@ -1,10 +1,10 @@
 import requests
-import pandas as pd
+import math as m
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-import math
 
-def data_linear_regression_graph(sym, name, precision, graph, figname):
+def data_linear_regression_graph(sym, name, precision_offset = 0, graph = False, figname = ""):
     # Cache Series from data DataFrame
     partial_data = data[name]
 
@@ -13,10 +13,10 @@ def data_linear_regression_graph(sym, name, precision, graph, figname):
 
     # Create the regression line
     intercept = partial_data[0]
-    min_slope = math.inf
-    max_slope = -math.inf
+    min_slope = m.inf
+    max_slope = -m.inf
 
-    # Find min and max slope
+    ## Find min and max slope
     for i in range(1, x):
         slope = (partial_data[i] - intercept) / i
         if slope < min_slope:
@@ -24,9 +24,20 @@ def data_linear_regression_graph(sym, name, precision, graph, figname):
         if slope > max_slope:
             max_slope = slope
 
-    # Select the slope that fits the most data, based on the distance from the data to the current line with the current slope
-    min_dist = math.inf
+    ## Select the slope that fits the most data, based on the distance from the data to the current line with the current slope
     best_slope = None
+
+    ### Determine how much to increment per slope for a balance between accuracy and speed (triple digit iterations is acceptable)
+    diff_slope = max_slope - min_slope
+    digits = m.ceil(m.log10(diff_slope))
+    offset = 0
+    
+    if m.fmod(diff_slope, 10**(digits)) == 0:
+        offset = 1
+    
+    precision = 10**(digits - 3 + offset - precision_offset) # precision offset can be used to manually adjust the increments
+    
+    min_dist = m.inf
 
     for i in np.arange(min_slope, max_slope, precision):
         dist = 0
@@ -86,4 +97,4 @@ data = data.iloc[::-1]
 
 ###### Regression Techniques WIP
 
-data_linear_regression_graph(symbol, "open", 0.1, False, "")
+data_linear_regression_graph(symbol, "volume")
