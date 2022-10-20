@@ -1,0 +1,11 @@
+.applicationForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+.plotGraph{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
