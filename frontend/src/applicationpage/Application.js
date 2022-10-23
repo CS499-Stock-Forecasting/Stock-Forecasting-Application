@@ -17,6 +17,8 @@ export class Application extends Component {
             databaseContainsTicker: false,
             ticker: '',
             stockInfo: [],
+            stockOpen: [],
+            stockDate: [],
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -50,8 +52,11 @@ export class Application extends Component {
         axios.get("/stockForecasting/")
 
         .then((res) => {console.log(res.data[0].data["Meta Data"]);
+            console.log(res.data[0].data["Time Series (Daily)"]);
 
             this.setState({stockInfo: res.data[0].data["Meta Data"]});
+            this.setState({stockData: res.data[0].data["Time Series (Daily)"]});
+
         });
 
       };
@@ -68,7 +73,15 @@ export class Application extends Component {
         //   }
   
     render() {
-    const {stockInfo} = this.state  
+    const {stockInfo, stockData, stockOpen, stockDate} = this.state  
+    
+    for (const property in stockData) {
+    stockOpen.push(stockData[property]["1. open"])
+    stockDate.push(property)
+
+    }
+    console.log (this.state.stockDate)
+    
     return (
         <div>
             <Header/>
@@ -90,8 +103,11 @@ export class Application extends Component {
             {/* <ui>{this.state.stockInfo.map(stockInfo => <li>{stockInfo.symbol}</li>)} </ui>   */}
             <div>
             <div >{this.state.stockInfo["2. Symbol"]}</div>
+            {/* <div>{this.state.stockData["2022-04-20"].data["1. open"]}</div> */}
             {/* key= {this.state.stockInfo["1. Infomation"]} */}
-            {/* {Object.keys(this.state.stockInfo).map((this) */}
+            {/* {Object.keys(this.state.stockData).map(()) */}
+            /* this.state.stockInfo.map(( )) */
+            
             </div>
 
 
@@ -102,26 +118,27 @@ export class Application extends Component {
                 <Plot 
                     data={[
                         { 
-                            x: [1, 2, 3,3, 4,5,6,7,8,9],
-                            y: [2, 5 ,7,3, 9,4,8,5,7,2,1],
+                            x: this.state.stockDate,
+                            y: this.state.stockOpen,
                             type: "scatter",
                             mode: "lines",
                             name: 'AAPL High',
                             line: {color: '#17BECF'},
                         },
-                        { 
-                            x: [1, 2, 3, 4 , 5 ],
-                            y: [2, 6, 3, 4 , 6 ],
-                            type: "scatter",
-                            mode: "lines",
-                            name: 'AAPL low',
-                            line: {color: '#7F7F7F'},
-                        },
+                        // { 
+                        //     x: [1, 2, 3, 4 , 5 ],
+                        //     y: [2, 6, 3, 4 , 6 ],
+                        //     type: "scatter",
+                        //     mode: "lines",
+                        //     name: 'AAPL low',
+                        //     line: {color: '#7F7F7F'},
+                        // },
                     ]}
 
                     layout={ {width: 1400, height: 480, title: `${this.state.stockInfo["2. Symbol"]} Stock`,
                     xaxis: {
-                        // range: ['2016-07-01', '2016-12-31'],
+                        autorange: true,
+                        range: ['2022-04-01', '2022-12-31'],
                         type: 'date'
                     },
                     yaxis: {
