@@ -49,13 +49,13 @@ export class Application extends Component {
         // });
 
 
-        axios.get("/stockForecasting/")
+        axios.get("/stockForecasting/" + ticker)
 
-        .then((res) => {console.log(res.data[0].data["Meta Data"]);
-            console.log(res.data[0].data["Time Series (Daily)"]);
+        .then((res) => {console.log(res.data.data["Meta Data"]);
+            console.log(res.data.data["Time Series (Daily)"]);
 
-            this.setState({stockInfo: res.data[0].data["Meta Data"]});
-            this.setState({stockData: res.data[0].data["Time Series (Daily)"]});
+            this.setState({stockInfo: res.data.data["Meta Data"]});
+            this.setState({stockData: res.data.data["Time Series (Daily)"]});
 
         });
 
