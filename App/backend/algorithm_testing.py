@@ -28,14 +28,14 @@ def data_linear_regression_graph(sym, name, precision_offset = 0, graph = False,
     best_slope = None
 
     ### Determine how much to increment per slope for a balance between accuracy and speed (triple digit iterations is acceptable)
+    precision = 0
     diff_slope = max_slope - min_slope
-    digits = m.ceil(m.log10(diff_slope))
-    offset = 0
-    
-    if m.fmod(diff_slope, 10**(digits)) == 0:
-        offset = 1
-    
-    precision = 10**(digits - 3 + offset - precision_offset) # precision offset can be used to manually adjust the increments
+
+    if diff_slope > 0:
+        digits_estimate = m.log10(diff_slope)
+        digits_ceil = m.ceil(digits_estimate)
+        digits = digits_ceil + (digits_ceil == digits_estimate)
+        precision = 10**(digits - 3 - precision_offset) # precision offset can be used to manually adjust the increments
     
     min_dist = m.inf
 
