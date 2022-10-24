@@ -4,6 +4,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+'''
+STUB FOR PREDICTION ALGORITHM
+'''
+def predict(originalJsonData):
+    print(originalJsonData)
+    return originalJsonData
+
 def data_linear_regression_graph(sym, name, precision_offset = 0, graph = False, figname = ""):
     # Cache Series from data DataFrame
     partial_data = data[name]
@@ -73,28 +80,28 @@ def data_linear_regression_graph(sym, name, precision_offset = 0, graph = False,
 
 ###### Get data from AlphaVantage
 
-symbol = "IBM"
-url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + symbol + "&apikey=RO71SZX5F72HYPEQ"
+# symbol = "IBM"
+# url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + symbol + "&apikey=RO71SZX5F72HYPEQ"
 
-data = requests.get(url).json()["Monthly Time Series"]
+# data = requests.get(url).json()["Monthly Time Series"]
 
-###### Data Manipulation
+# ###### Data Manipulation
 
-# Convert data from AlphaVantage to DataFrame
-data = pd.DataFrame(data)
+# # Convert data from AlphaVantage to DataFrame
+# data = pd.DataFrame(data)
 
-# Transpose the data so that all values can fall on a few columns
-data = data.transpose()
+# # Transpose the data so that all values can fall on a few columns
+# data = data.transpose()
 
-# Remove numbers from columns
-data = data.rename(lambda x: x[3:], axis = "columns")
+# # Remove numbers from columns
+# data = data.rename(lambda x: x[3:], axis = "columns")
 
-# Convert all string values to floats; we cannot work with numbers that are strings
-data = data.astype(float)
+# # Convert all string values to floats; we cannot work with numbers that are strings
+# data = data.astype(float)
 
-# Reverse all data
-data = data.iloc[::-1]
+# # Reverse all data
+# data = data.iloc[::-1]
 
-###### Regression Techniques WIP
+# ###### Regression Techniques WIP
 
-data_linear_regression_graph(symbol, "volume")
+# data_linear_regression_graph(symbol, "volume")

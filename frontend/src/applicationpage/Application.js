@@ -50,14 +50,27 @@ export class Application extends Component {
 
 
         axios.get("/stockForecasting/" + ticker)
+        //on success
+        .then((res) => {
+            console.log(res.data);
+            // on success can only access attributes "data" and "ticker"
 
-        .then((res) => {console.log(res.data.data["Meta Data"]);
-            console.log(res.data.data["Time Series (Daily)"]);
+            // console.log(res.data.data["Meta Data"]);
+            // console.log(res.data.data["Time Series (Daily)"]);
 
-            this.setState({stockInfo: res.data.data["Meta Data"]});
-            this.setState({stockData: res.data.data["Time Series (Daily)"]});
+            // this.setState({stockInfo: res.data.data["Meta Data"]});
+            // this.setState({stockData: res.data.data["Time Series (Daily)"]});
 
+        },
+        //on failure call ML algorithm and post to database
+        //PROBLEM: if post is called on a ticker that exists in the database a duplicate will be made, PUT should be used instead
+        (res) => {
+            axios.post('/stockForecasting/', {ticker: ticker, data: {}})
+                .then(response => {console.log(response.data);
+                });
+                
         });
+        
 
       };
         handleChange(event) {
