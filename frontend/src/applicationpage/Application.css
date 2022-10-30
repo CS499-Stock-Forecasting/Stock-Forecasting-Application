@@ -1,9 +1,55 @@
-.applicationForm{
-    display: flex;
-    justify-content: center;
+.applicationTop{
+    display: inline-flex;
+    justify-content: space-between;
     align-items: center;
     margin-top: 5%;
+    width: 100%;
 }
+
+.applicationForm{
+    margin-right: 5%;
+    /* margin-left: 15%; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%; */
+}
+.tickerText{
+    margin-left: 6.5%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+.applicationCard{
+    background-color: #EDEDED;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.currenValueContainer{
+    margin-left: 2%;
+}
+.currentValue{
+    display: flex;
+    align-items: center;
+    white-space: pre-line;
+}
+
+.lastRefereshedContainer{
+    margin-left: 10%;
+    align-items: top;
+}
+.lastRefereshText{
+    display: flex;
+    align-items: top;
+
+}
+
+
 .plotGraph{
     display:flex;
     justify-content: center;

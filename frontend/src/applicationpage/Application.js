@@ -58,8 +58,8 @@ export class Application extends Component {
             // console.log(res.data.data["Meta Data"]);
             // console.log(res.data.data["Time Series (Daily)"]);
 
-            // this.setState({stockInfo: res.data.data["Meta Data"]});
-            // this.setState({stockData: res.data.data["Time Series (Daily)"]});
+            this.setState({stockInfo: res.data.data["Meta Data"]});
+            this.setState({stockData: res.data.data["Time Series (Daily)"]});
 
         },
         //on failure call ML algorithm and post to database
@@ -98,16 +98,49 @@ export class Application extends Component {
     return (
         <div>
             <Header/>
-            <div className='applicationForm'>
 
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Ticker:
-                    <input type="text" value={this.state.value} onChange={this.handleChange} />
-                </label>
+            <div className='applicationTop'>
+                <div className='tickerText' >
+                    <h1>${this.state.stockInfo["2. Symbol"]}</h1>
+                </div>
+
+                <div className='applicationForm'>
+
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Ticker:
+                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    
+                    <input type="submit" value="Submit" className="btn btn-secondary mr-2"/>
+                </form>
+
+                </div>
+            </div>
+            
+
+            <div className="applicationCard" style={{borderRadius: '15px'}}>
                 
-                <input type="submit" value="Submit" className="btn btn-secondary mr-2"/>
-            </form>
+                <div className='currenValueContainer'>
+                    Current Value
+                    <h2 className='currentValue'>${this.state.stockOpen[0]}</h2>
+                </div>
+
+                <div className='lastRefereshedContainer'>
+                    <div className='lastRefereshText'>Last Refereshed</div>
+                    <h2 className='lastRefereshed'>Date {this.state.stockInfo["3. Last Refreshed"]}</h2>
+                </div>
+
+                <div className='lastRefereshedContainer'>
+                    <div className='lastRefereshText'>High</div>
+                    <h2 className='lastRefereshed'>${this.state.stockOpen[2]}</h2>
+                </div>
+                <div className='lastRefereshedContainer'>
+                    <div className='lastRefereshText'>Low</div>
+                    <h2 className='lastRefereshed'>${this.state.stockOpen[3]}</h2>
+                </div>
+
+
 
             </div>
 
@@ -115,11 +148,10 @@ export class Application extends Component {
 
             {/* <ui>{this.state.stockInfo.map(stockInfo => <li>{stockInfo.symbol}</li>)} </ui>   */}
             <div>
-            <div >{this.state.stockInfo["2. Symbol"]}</div>
+            {/* <div >{this.state.stockInfo["2. Symbol"]}</div> */}
             {/* <div>{this.state.stockData["2022-04-20"].data["1. open"]}</div> */}
             {/* key= {this.state.stockInfo["1. Infomation"]} */}
             {/* {Object.keys(this.state.stockData).map(()) */}
-            /* this.state.stockInfo.map(( )) */
             
             </div>
 
