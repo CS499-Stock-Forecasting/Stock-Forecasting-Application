@@ -19,71 +19,56 @@ export class Application extends Component {
             stockInfo: [],
             stockOpen: [],
             stockDate: [],
+            existingStocks: new Set()
         };
     
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
 
-      componentDidMount() {
+    componentDidMount() {
+        // get a list of all the existing stocks to cross reference user searches
+        axios.get('https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=RO71SZX5F72HYPEQ')
+        .then(response => {
+            this.parseCsv(response.data);
+        })
+    }
 
-
-        // this.getStockData();
-      }
-      
-      getStockData = (ticker) => {
-        // reset stock data
-        // this.setState({value: '', stockData: [], databaseContainsTicker: false });
-        // axios
-        //     .get("/stockForecasting/" + ticker)
-        //     // .then((res) => this.setState({value: ticker, stockData: res.data, databaseContainsTicker: true }))
-        //     .then((res) => {
-        //         // stockData(res.data);
-        //         // this.setState({stockInfo: res.data})
-        //         console.log(res.data);
-        //     })
-    
-        //     .catch((err) => {
-        //         // alert("Stock data not in database");
-        //         this.setState({value: '', stockData: [], databaseContainsTicker: false });
-        // });
-
-
-        axios.get("/stockForecasting/" + ticker)
-        //on success
-        .then((res) => {
-            console.log(res.data);
-            // on success can only access attributes "data" and "ticker"
-
-            // console.log(res.data.data["Meta Data"]);
-            // console.log(res.data.data["Time Series (Daily)"]);
-
-            this.setState({stockInfo: res.data.data["Meta Data"]});
-            this.setState({stockData: res.data.data["Time Series (Daily)"]});
-
-        },
-        //on failure call ML algorithm and post to database
-        //PROBLEM: if post is called on a ticker that exists in the database a duplicate will be made, PUT should be used instead
-        (res) => {
-            axios.post('/stockForecasting/', {ticker: ticker, data: {}})
-                .then(response => {console.log(response.data);
-                });
-                
+    parseCsv = (csvData) => {
+        csvData.split("\n").map((element) => {
+            this.state.existingStocks.add(element.split(",")[0]);
         });
-        
-
+    };
+      
+    getStockData = (ticker) => {
+        if (this.state.existingStocks.has(this.state.value)) {
+            axios.get("/stockForecasting/" + ticker)
+            //on success
+            .then((res) => {
+                this.setState({stockInfo: res.data.data["Meta Data"]});
+                this.setState({stockData: res.data.data["Time Series (Daily)"]});
+            },
+            //on failure call ML algorithm and post to database
+            //TODO: if post is called on a ticker that exists in the database a duplicate will be made, PUT should be used instead
+            (res) => {
+                axios.post('/stockForecasting/', {ticker: ticker, data: {}})
+                    .then(response => {console.log(response.data);
+                    });    
+            });
+            
+        } else {
+            alert("Stock doesnt exist");
+        }
       };
-        handleChange(event) {
-            this.setState({value: event.target.value});
-          }
-        
-          handleSubmit(event) {
-            this.getStockData(this.state.value);
-            event.preventDefault();
-          }    
-        //   renderItems = () => {
-        //     const ticker  = this.value;
-        //   }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+        }
+    
+    handleSubmit(event) {
+        this.getStockData(this.state.value);
+        event.preventDefault();
+    }    
   
     render() {
     const {stockInfo, stockData, stockOpen, stockDate} = this.state  
