@@ -1,107 +1,94 @@
 import requests
-import math as m
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+import math
+import datetime
+import copy
 
-'''
-STUB FOR PREDICTION ALGORITHM
-'''
 def predict(originalJsonData):
-    print(originalJsonData)
+    ## Get data from AlphaVantage
+    url = " https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + originalJsonData["ticker"] + "&apikey=RO71SZX5F72HYPEQ"
+    data = requests.get(url).json()["Monthly Time Series"]
+
+    ## Dictionary to store each stock data type per date
+    columns = {"1. open" : [0, 0, 0], "2. high" : [0, 0, 0], "3. low" : [0, 0, 0], "4. close" : [0, 0, 0], "5. volume" : [0, 0, 0]}
+
+    ## Size of AlphaVantage data
+    s = len(data)
+
+    ## Calculate the intercept and slope of each stock data type
+    for col in columns:
+        # Calculate intercept and initial slope
+        # Based on https://en.wikipedia.org/wiki/Simple_linear_regression#Numerical_example
+        index = 1
+
+        x = 0
+        y = 0
+        x_sqr = 0
+        xy = 0
+
+        intercept = None
+
+        for i in reversed(data):
+            point = float(data[i][col])
+
+            # For the intercept, we just need the first data point
+            if index == 1:
+                intercept = point
+
+            x += index
+            y += point
+            x_sqr += index * index
+            xy += index * point
+
+            index += 1
+
+        slope = (s * xy - x * y) / (s * x_sqr - x * x)
+        
+        # Calculate the positive or negative bias towards the slope, based on z-scores calulated from the mean and standard deviation
+        mean = y / s
+        sample_sd = 0
+
+        for i in reversed(data):
+            point = float(data[i][col])
+            
+            sample_sd += (point - mean) * (point - mean)
+
+        sample_sd = math.sqrt(sample_sd / (s - 1))
+
+        # The z-scores will determine if the data is more "optimistic" or "pessimistic" about the future
+        # Positive z-scores indicate good days, while negative z-scores indicate bad days
+        n_z_scores = 0
+        z_scores = 0
+        adj_s = s
+
+        for i in reversed(data):
+            point = float(data[i][col])
+
+            z_score = (point - mean) / sample_sd
+
+            if z_score > 0:
+                z_s_ceil = math.ceil(z_score)
+                z_scores += z_s_ceil
+                adj_s += z_s_ceil - 1
+            elif z_score < 0:
+                z_s_floor = -math.floor(z_score)
+                n_z_scores += z_s_floor
+                adj_s += z_s_floor - 1
+
+        # The bias is essentially the ratio of (scaled) negative to positive z-scores, with a significant digits adjustment based off the mean
+        log_mean = math.log10(math.trunc(math.fabs(mean)))
+
+        slope += ((z_scores - n_z_scores) / adj_s) * math.pow(10, math.ceil(log_mean + (math.ceil(log_mean) == log_mean)) - 3)
+
+        columns[col][0] = intercept
+        columns[col][1] = slope
+
+    ## Predict specified number of days
+    num_new_days = 5
+
+    for i in range(1, num_new_days + 1):
+        next_date = datetime.date.today() + datetime.timedelta(i)
+        for col in columns:
+            columns[col][2] = columns[col][0] + columns[col][1] * (s + i)
+        originalJsonData["data"][next_date.isoformat()] = copy.deepcopy(columns)
+
     return originalJsonData
-
-def data_linear_regression_graph(sym, name, precision_offset = 0, graph = False, figname = ""):
-    # Cache Series from data DataFrame
-    partial_data = data[name]
-
-    # Get the number of data points
-    x = partial_data.size
-
-    # Create the regression line
-    intercept = partial_data[0]
-    min_slope = m.inf
-    max_slope = -m.inf
-
-    ## Find min and max slope
-    for i in range(1, x):
-        slope = (partial_data[i] - intercept) / i
-        if slope < min_slope:
-            min_slope = slope
-        if slope > max_slope:
-            max_slope = slope
-
-    ## Select the slope that fits the most data, based on the distance from the data to the current line with the current slope
-    best_slope = None
-
-    ### Determine how much to increment per slope for a balance between accuracy and speed (triple digit iterations is acceptable)
-    precision = 0
-    diff_slope = max_slope - min_slope
-
-    if diff_slope > 0:
-        digits_estimate = m.log10(diff_slope)
-        digits_ceil = m.ceil(digits_estimate)
-        digits = digits_ceil + (digits_ceil == digits_estimate)
-        precision = 10**(digits - 3 - precision_offset) # precision offset can be used to manually adjust the increments
-    
-    min_dist = m.inf
-
-    for i in np.arange(min_slope, max_slope, precision):
-        dist = 0
-        for j in range(x):
-            dist += abs(partial_data[j] - (i * j + intercept))
-        dist /= x
-        if dist < min_dist:
-            best_slope = i
-            min_dist = dist
-        else:
-            break
-
-    # If permitted, graph out the data with the regression line
-    if graph:
-        partial_data_plot = partial_data.plot(figsize = (8, 5))
-        partial_data_plot.plot([intercept + best_slope * i for i in range(x + 1)])
-        partial_data_plot.get_figure().savefig(figname)
-
-    # Print out the next predicted value and the deviation (range the actual value could fall on)
-    deviation = None
-    prediction = None
-
-    ## Volume needs to be a whole number
-    if name == "volume":
-        deviation = round(partial_data.std())
-        prediction = round(intercept + best_slope * (x + 1))
-    else:
-        deviation = round(partial_data.std(), 2)
-        prediction = round(intercept + best_slope * (x + 1), 2)
-
-    print("(" + sym + ")", name, "next day:", prediction, "+-", deviation)
-
-
-###### Get data from AlphaVantage
-
-# symbol = "IBM"
-# url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + symbol + "&apikey=RO71SZX5F72HYPEQ"
-
-# data = requests.get(url).json()["Monthly Time Series"]
-
-# ###### Data Manipulation
-
-# # Convert data from AlphaVantage to DataFrame
-# data = pd.DataFrame(data)
-
-# # Transpose the data so that all values can fall on a few columns
-# data = data.transpose()
-
-# # Remove numbers from columns
-# data = data.rename(lambda x: x[3:], axis = "columns")
-
-# # Convert all string values to floats; we cannot work with numbers that are strings
-# data = data.astype(float)
-
-# # Reverse all data
-# data = data.iloc[::-1]
-
-# ###### Regression Techniques WIP
-
-# data_linear_regression_graph(symbol, "volume")
