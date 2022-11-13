@@ -1,8 +1,15 @@
 import React from 'react';
 import './Intro.css';
+import {useState} from 'react'
+import Modal from '../../../components/Modal';
 
 function Intro() {
+
+const [openModal, setOpenModal] = useState(false)
+
+
   return (
+    
     <div className='introBody'>
       <h1 className='introBodyH1'>Predict future trends of a stock with past data</h1>
       <div className='introBodyText'>
@@ -11,7 +18,9 @@ function Intro() {
         The application of this project is to give users the ability to visualize the future performance 
         of any stock to provide them with a good indication of when to buy and sell a particular stock. 
        </div>
-       <button className='introBodyButton' style={{background: "lightgreen" , width:'15%', border: '0px', height:'45px' }} >Get Started</button>
+       <button className='introBodyButton' onClick={() => {setOpenModal(true);}}
+       style={{background: "lightgreen" , width:'15%', border: '0px', height:'45px' }} >Get Started</button>
+
     </div>
   )
 }

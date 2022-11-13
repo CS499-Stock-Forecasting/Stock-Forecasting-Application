@@ -3,7 +3,7 @@
     width: 100%;
 }
 .navButton{
-    display: flex-end;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     margin-left: 50%;
@@ -23,12 +23,13 @@
     font-size: 1.4rem;
 }
 .logo{
-    width: 15%;
+    width: 100%;
     color: black;
-    text-decoration: none;
+    text-decoration: none !important;
     font-size: 1.4rem;
     display: flex;
     flex-direction: row;
+    margin-right: 2%;
 }
 html {
 	scroll-behavior: smooth;
@@ -38,5 +39,5 @@ html {
     justify-content: center;
     align-items: center;
     margin-top: 2%;
-    margin-right: 4%;
+    margin-right: 0%;
 }

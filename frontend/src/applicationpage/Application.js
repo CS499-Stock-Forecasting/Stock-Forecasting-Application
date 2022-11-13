@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from '../header/Header'
+import HeaderApp from '../header/HeaderApp'
 import axios from "axios";
 import './Application.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -82,7 +82,7 @@ export class Application extends Component {
     
     return (
         <div>
-            <Header/>
+            <HeaderApp/>
 
             <div className='applicationTop'>
                 <div className='tickerText' >

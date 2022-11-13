@@ -1,0 +1,25 @@
+.navbar{
+    display: flex;
+    width: 100%;
+}
+.avatarbutton{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-left: 65%;
+}
+
+.avatarPic{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.avatarName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    padding-left: 2%;
+}
