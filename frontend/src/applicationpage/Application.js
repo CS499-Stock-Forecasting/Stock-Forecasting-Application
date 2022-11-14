@@ -41,7 +41,7 @@ export class Application extends Component {
     };
       
     getStockData = (ticker) => {
-        if (this.state.existingStocks.has(this.state.value)) {
+        if (this.state.existingStocks.has(ticker)) {
             axios.get("/stockForecasting/" + ticker)
             //on success
             .then((res) => {
@@ -66,7 +66,7 @@ export class Application extends Component {
         }
     
     handleSubmit(event) {
-        this.getStockData(this.state.value);
+        this.getStockData(this.state.value.toUpperCase());
         event.preventDefault();
     }    
   
