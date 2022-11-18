@@ -45,15 +45,18 @@ export class Application extends Component {
         if (this.state.existingStocks.has(ticker)) {
             axios.get("/stockForecasting/" + ticker)
             //on success
-            .then((res) => {
-                this.setState({stockInfo: res.data.data["Meta Data"]});
-                this.setState({stockData: res.data.data["Time Series (Daily)"]});
+            .then((response) => {
+                this.setState({stockInfo: response.data.data["Meta Data"]});
+                this.setState({stockData: response.data.data["Monthly Time Series"]});
             },
             //on failure call ML algorithm and post to database
             //TODO: if post is called on a ticker that exists in the database a duplicate will be made, PUT should be used instead
             (res) => {
                 axios.post('/stockForecasting/', {ticker: ticker, data: {}})
-                    .then(response => {console.log(response.data);
+                    .then(response => {
+                        console.log(response.data)
+                        this.setState({stockInfo: response.data.data["Meta Data"]});
+                        this.setState({stockData: response.data.data["Monthly Time Series"]});
                     });    
             });
             

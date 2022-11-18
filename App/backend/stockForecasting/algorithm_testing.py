@@ -6,7 +6,8 @@ import copy
 def predict(originalJsonData):
     ## Get data from AlphaVantage
     url = " https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=" + originalJsonData["ticker"] + "&apikey=RO71SZX5F72HYPEQ"
-    data = requests.get(url).json()["Monthly Time Series"]
+    originalJsonData["data"] = requests.get(url).json()
+    data = originalJsonData["data"]["Monthly Time Series"]
 
     ## Dictionary to store each stock data type per date
     columns = {"1. open" : [0, 0, 0], "2. high" : [0, 0, 0], "3. low" : [0, 0, 0], "4. close" : [0, 0, 0], "5. volume" : [0, 0, 0]}
@@ -89,6 +90,6 @@ def predict(originalJsonData):
         next_date = datetime.date.today() + datetime.timedelta(i)
         for col in columns:
             columns[col][2] = columns[col][0] + columns[col][1] * (s + i)
-        originalJsonData["data"][next_date.isoformat()] = copy.deepcopy(columns)
+        originalJsonData["data"]["Monthly Time Series"][next_date.isoformat()] = copy.deepcopy(columns)
 
     return originalJsonData
