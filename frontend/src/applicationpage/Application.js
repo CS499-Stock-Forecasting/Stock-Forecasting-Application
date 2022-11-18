@@ -35,8 +35,9 @@ export class Application extends Component {
     }
 
     parseCsv = (csvData) => {
-        csvData.split("\n").map((element) => {
+        csvData.toString().split("\n").map((element) => {
             this.state.existingStocks.add(element.split(",")[0]);
+            console.log(element.split(",")[0]);
         });
     };
       

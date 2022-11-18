@@ -1,6 +1,7 @@
 import React from 'react';
 import './Intro.css';
 import {useState} from 'react'
+import {Link} from 'react-router-dom';
 import Modal from '../../../components/Modal';
 
 function Intro() {
@@ -18,9 +19,11 @@ const [openModal, setOpenModal] = useState(false)
         The application of this project is to give users the ability to visualize the future performance 
         of any stock to provide them with a good indication of when to buy and sell a particular stock. 
        </div>
-       <button className='introBodyButton' onClick={() => {setOpenModal(true);}}
-       style={{background: "lightgreen" , width:'15%', border: '0px', height:'45px' }} >Get Started</button>
-
+       <Link to="/app">
+        <button className='introBodyButton' onClick={() => {setOpenModal(true);}}
+        style={{background: "lightgreen" , width:'15%', border: '0px', height:'45px' }} >Get Started</button>
+       </Link>
+ 
     </div>
   )
 }
