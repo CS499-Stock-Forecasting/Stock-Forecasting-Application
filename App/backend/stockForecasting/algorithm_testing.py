@@ -10,7 +10,7 @@ def predict(originalJsonData):
     data = originalJsonData["data"]["Monthly Time Series"]
 
     ## Dictionary to store each stock data type per date
-    columns = {"1. open" : [0, 0, 0], "2. high" : [0, 0, 0], "3. low" : [0, 0, 0], "4. close" : [0, 0, 0], "5. volume" : [0, 0, 0]}
+    columns = {"1. open" : [0, 0], "2. high" : [0, 0], "3. low" : [0, 0], "4. close" : [0, 0], "5. volume" : [0, 0]}
 
     ## Size of AlphaVantage data
     s = len(data)
@@ -86,10 +86,18 @@ def predict(originalJsonData):
     ## Predict specified number of days
     num_new_days = 5
 
+    today = datetime.date.today()
+
     for i in range(1, num_new_days + 1):
-        next_date = datetime.date.today() + datetime.timedelta(i)
-        for col in columns:
-            columns[col][2] = columns[col][0] + columns[col][1] * (s + i)
-        originalJsonData["data"]["Monthly Time Series"][next_date.isoformat()] = copy.deepcopy(columns)
+        next_date = (today + datetime.timedelta(i)).isoformat()
+        data[next_date] = copy.deepcopy(columns)
+        new_data = data[next_date]
+        for col in new_data:
+            if col == "5. volume":
+                new_data[col] = str(round(new_data[col][0] + new_data[col][1] * (s + i)))
+            else:
+                new_data[col] = str(round(new_data[col][0] + new_data[col][1] * (s + i), 4))
+
+    originalJsonData["data"]["Monthly Time Series"] = dict(sorted(data.items(), key = lambda x: x[0], reverse = True))
 
     return originalJsonData
