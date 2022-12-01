@@ -75,11 +75,12 @@ export class Application extends Component {
     }    
   
     render() {
-    const {stockInfo, stockData, stockOpen, stockDate} = this.state  
-    
-    for (const property in stockData) {
-    stockOpen.push(stockData[property]["1. open"])
-    stockDate.push(property)
+    // const {stockInfo, stockData, stockOpen, stockDate} = this.state  
+    this.state.stockOpen = [];
+    this.state.stockDate = [];
+    for (const property in this.state.stockData) {
+    this.state.stockOpen.push(this.state.stockData[property]["1. open"])
+    this.state.stockDate.push(property)
 
     }
     console.log (this.state.stockDate)
