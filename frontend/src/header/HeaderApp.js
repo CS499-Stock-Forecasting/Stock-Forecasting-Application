@@ -11,10 +11,10 @@ function HeaderApp() {
             <div className='navContainter'>
             <span ><Link to = '/' className="logo" style = {{textDecoration: "none", color:"black"}}><img className='headerLogo' src={logo} alt= "Img" height={25} width={25}></img>Stock Application</Link></span>
 
-            <div className='avatarbutton'>
+            {/* <div className='avatarbutton'>
                 <img className='avatarPic' src={avatar} alt= "Img" height={25} width={25}></img>
                 <Link to = '/app' className = 'avatarName' style = {{textDecoration: "none", color:"black"}}>User</Link>
-            </div>
+            </div> */}
             </div>
         </nav>
     </div>
