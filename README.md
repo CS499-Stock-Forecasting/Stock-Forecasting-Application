@@ -20,27 +20,19 @@ _Note: depending on python version `python` and `pip` commands may need to be re
     pip install pipenv
     ```
 
-4. Open a pipenv shell:
+4. Navigate to /Stock-Forecasting-Application/App/ and open a pipenv shell:
 
     ```
     pipenv shell
     ```
 
-5. Install Django
+5. Navigate to /Stock-Forecasting-Application/App/backend and install dependencies from requirements.txt
 
     ```
-    pipenv install django
+    pip install -r requirements.txt
     ```
 
-6. Install Django REST framework and cors-headers for middleware
-
-    ```
-    pipenv install djangorestframework django-cors-headers
-    ```
-
-7. Navigate to `/Stock-Forecasting-Application/App/backend/`
-
-8. Start server:
+6. Start server:
     ```
     python manage.py runserver
     ```
