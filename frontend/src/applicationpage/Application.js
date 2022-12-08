@@ -20,8 +20,8 @@ export class Application extends Component {
             stockOpen: [],
             stockDate: [],
             stockPredict: [],
-            stockHigh: '',
-            stockLow: '',
+            stockHigh: [],
+            stockLow: [],
             existingStocks: new Set()
         };
     
@@ -81,27 +81,22 @@ export class Application extends Component {
     // const {stockInfo, stockData, stockOpen, stockDate} = this.state  
     this.state.stockOpen = [];
     this.state.stockDate = [];
-    this.state.stockHigh = '';
-    this.state.stockLow = '';
+    this.state.stockHigh = [];
+    this.state.stockLow = [];
     for (const property in this.state.stockData) {
     this.state.stockOpen.push(this.state.stockData[property]["1. open"])
-    this.state.stockHigh = this.state.stockData[property]["2. high"]
-    this.state.stockLow = this.state.stockData[property]["3. low"]
     this.state.stockDate.push(property)
-
+    this.state.stockHigh.push(this.state.stockData[property]["2. high"])
+    this.state.stockLow.push(this.state.stockData[property]["3. low"])
     }
-    
+
     this.state.stockPredict = [];
     let datearr = this.state.stockDate.filter(date =>  new Date('2022-11-30').getTime() < new Date(date).getTime())    
-    console.log("date arr",datearr )
 
     for(let date of datearr){
-        console.log(date )
-        console.log(this.state.stockData[date])
         this.state.stockPredict.push(this.state.stockData[date]["1. open"])
     }
-    // let currentVal =this.state.stockInfo["3. Last Refreshed"]["1. open"]
-    // console.log(currentVal)
+
 
     return (
         <div>
@@ -141,30 +136,13 @@ export class Application extends Component {
 
                 <div className='lastRefereshedContainer'>
                     <div className='lastRefereshText'>High</div>
-                    <h2 className='lastRefereshed'>${this.state.stockHigh}</h2>
+                    <h2 className='lastRefereshed'>${this.state.stockHigh[6]}</h2>
                 </div>
                 <div className='lastRefereshedContainer'>
                     <div className='lastRefereshText'>Low</div>
-                    <h2 className='lastRefereshed'>${this.state.stockLow}</h2>
+                    <h2 className='lastRefereshed'>${this.state.stockLow[6]}</h2>
                 </div>
-
-
-
             </div>
-
-
-
-            {/* <ui>{this.state.stockInfo.map(stockInfo => <li>{stockInfo.symbol}</li>)} </ui>   */}
-            <div>
-            {/* <div >{this.state.stockInfo["2. Symbol"]}</div> */}
-            {/* <div>{this.state.stockData["2022-04-20"].data["1. open"]}</div> */}
-            {/* key= {this.state.stockInfo["1. Infomation"]} */}
-            {/* {Object.keys(this.state.stockData).map(()) */}
-            
-            </div>
-
-
-
 
 
             <div className='plotGraph'>
