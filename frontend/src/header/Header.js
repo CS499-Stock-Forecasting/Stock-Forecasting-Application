@@ -19,9 +19,11 @@ function Header() {
                 <a href="#Features" data-rr-ui-event-key="#Features" className='navlinks' style={{textDecoration: "none", color: "black"}}>Features</a>
             </div>
             <div className='navButton'>
-            <button className='introBodyButton' onClick={() => {setOpenModal(true);}}
-             style={{background: "lightgreen" , width:'150%', border: '0px', height:'45px' }}>
-              <Link to = '/' style = {{textDecoration: "none", color:"black"}}>Get Started</Link></button>
+              <button className='introBodyButton' 
+              //onClick={() => {setOpenModal(true);}}
+                style={{background: "lightgreen" , width:'150%', border: '0px', height:'45px' }}>
+              <Link to = '/app' style = {{textDecoration: "none", color:"black"}}>Get Started</Link>
+              </button>
             </div>
             </div>
 

@@ -73,7 +73,10 @@ export class Application extends Component {
         }
     
     handleSubmit(event) {
-        this.getStockData(this.state.value.toUpperCase());
+        if(this.state.value) {
+            this.getStockData(this.state.value.toUpperCase());
+        }
+            
         event.preventDefault();
     }    
   
