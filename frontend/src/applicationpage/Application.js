@@ -31,7 +31,7 @@ export class Application extends Component {
 
     componentDidMount() {
         // get a list of all the existing stocks to cross reference user searches
-        axios.get('https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=RO71SZX5F72HYPEQ')
+        axios.get('https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=')
         .then(response => {
             this.parseCsv(response.data);
         })
